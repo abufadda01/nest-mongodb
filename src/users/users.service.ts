@@ -1,3 +1,4 @@
+import { UpdateUserDto } from './../dtos/UpdateUser.dto';
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
@@ -13,14 +14,15 @@ export class UsersService {
     
     constructor(@InjectModel(User.name) private userModel : Model <User>){}
     
-    // createUserDto WILL BE OBJECT THAT HAVE THE EXPECTED VALUES THAT WILL CAME FOMR THE USER REQ BODY , AND THE DTO STRUCTURE LOOKS LIKE OUR SCHEMA DEFINITION IN MOST CASES , NOT ALL FIELDS IN OUR SCHEMA MUST EXIST IN OUR DTO DEFINITION , WE USALLY USE THE DTO TO VALIDATE OUR DATA AND OUR REQUIRED KEYS THAT CAME FROM OUR REQ BODY
+    // createUserDto WILL BE OBJECT THAT HAVE THE EXPECTED keys VALUES THAT WILL CAME FOMR THE USER REQ BODY , AND THE DTO STRUCTURE LOOKS LIKE OUR SCHEMA DEFINITION IN MOST CASES , NOT ALL FIELDS IN OUR SCHEMA MUST EXIST IN OUR DTO DEFINITION , WE USALLY USE THE DTO TO VALIDATE OUR DATA AND OUR REQUIRED KEYS THAT CAME FROM OUR REQ BODY
+    // and the service will get the dto obj from the controller as a parameter after it been validated
     createUser(createUserDto : CreateUserDto){
         const newUser = new this.userModel(createUserDto)
         return newUser.save()
     }
 
 
-    
+
     getUsers(page : number){
         return this.userModel.find().skip((page - 1) * 10)
     }
@@ -33,7 +35,7 @@ export class UsersService {
         const isValidId = mongoose.Types.ObjectId.isValid(id)
         
         if(!isValidId){
-            throw new HttpException("user not found" , 404)
+            throw new HttpException("Invalid user id" , 400)
         }
 
         const user = await this.userModel.findById(id)
@@ -44,5 +46,29 @@ export class UsersService {
 
         return user
     }
+
+
+
+    async updateUser(updateUserDto : UpdateUserDto , id : string){
+
+        const isValidId = mongoose.Types.ObjectId.isValid(id)
+        
+        if(!isValidId){
+            throw new HttpException("Invalid user id" , 400)
+        }
+
+        const user = await this.userModel.findById(id)
+
+        if(!user){
+            throw new HttpException("user not found" , 404)
+        }
+
+        const updatedUser = await this.userModel.findByIdAndUpdate(id , {...updateUserDto} , {new : true})
+
+        return updatedUser
+
+    }
+
+
 
 } 
