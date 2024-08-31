@@ -1,8 +1,8 @@
-import { UpdateUserDto } from '../../dtos/UpdateUser.dto';
+import { UpdateUserDto } from '../dtos/UpdateUser.dto';
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
-import { CreateUserDto } from 'src/dtos/CreateUser.dto';
+import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { User } from 'src/schemas/User.Schema';
 import { UserSettings } from 'src/schemas/UserSettings.schema';
 

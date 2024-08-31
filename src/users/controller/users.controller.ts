@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Patch, Post, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { CreateUserDto } from 'src/dtos/CreateUser.dto';
-import { UpdateUserDto } from 'src/dtos/UpdateUser.dto';
+import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
+import { UpdateUserDto } from 'src/users/dtos/UpdateUser.dto';
 import { UsersService } from '../services/users.service';
 
 
