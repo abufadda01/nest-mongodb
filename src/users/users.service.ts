@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { CreateUserDto } from 'src/dtos/CreateUser.dto';
 import { User } from 'src/schemas/User.Schema';
 
@@ -19,4 +19,30 @@ export class UsersService {
         return newUser.save()
     }
 
-}
+
+    
+    getUsers(page : number){
+        return this.userModel.find().skip((page - 1) * 10)
+    }
+
+
+
+    // we could add the process of error handling in both service file and the controller
+    async getUserById(id : string){
+
+        const isValidId = mongoose.Types.ObjectId.isValid(id)
+        
+        if(!isValidId){
+            throw new HttpException("user not found" , 404)
+        }
+
+        const user = await this.userModel.findById(id)
+
+        if(!user){
+            throw new HttpException("user not found" , 404)
+        }
+
+        return user
+    }
+
+} 
