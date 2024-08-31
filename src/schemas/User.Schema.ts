@@ -1,4 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import mongoose from "mongoose";
+import { UserSettings } from "./UserSettings.schema";
+import { Post } from "./Post.schema";
 
 
 @Schema() // to detect that this class is will be a mongodb schema definition
@@ -12,6 +15,12 @@ export class User{
 
     @Prop({required : false})
     avatar? : string
+
+    @Prop({type : mongoose.Schema.Types.ObjectId , ref : "UserSettings"}) // this will be a ref id key to other schema
+    settings : UserSettings
+    
+    @Prop({type : [{type : mongoose.Schema.Types.ObjectId , ref : "Post"}]}) // this will be a ref id key to other schema
+    posts : Post[]
 
 }
 
