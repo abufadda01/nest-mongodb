@@ -17,7 +17,7 @@ export class UsersService {
     
     // createUserDto WILL BE OBJECT THAT HAVE THE EXPECTED keys VALUES THAT WILL CAME FOMR THE USER REQ BODY , AND THE DTO STRUCTURE LOOKS LIKE OUR SCHEMA DEFINITION IN MOST CASES , NOT ALL FIELDS IN OUR SCHEMA MUST EXIST IN OUR DTO DEFINITION , WE USALLY USE THE DTO TO VALIDATE OUR DATA AND OUR REQUIRED KEYS THAT CAME FROM OUR REQ BODY
     // and the service will get the dto obj from the controller as a parameter after it been validated
-    async createUser({settings , ...createUserDto} : CreateUserDto){ // we must first check that if the user is try to create a userSettings doc object because we can't add the ref key to the user doc object and we still dont have the userSettings doc object
+    async createUser({settings , ...createUserDto} : CreateUserDto) : Promise <User>{ // we must first check that if the user is try to create a userSettings doc object because we can't add the ref key to the user doc object and we still dont have the userSettings doc object
         
         // if i have a settings key in my req body then i want to create db doc object for this before add it as a ref key in the user doc object
         if(settings){
@@ -41,14 +41,14 @@ export class UsersService {
 
 
  
-    getUsers(page : number){
+    getUsers(page : number) : Promise <User[]>{
         return this.userModel.find().skip((page - 1) * 10)
     }
 
 
 
     // we could add the process of error handling in both service file and the controller
-    async getUserById(id : string){
+    async getUserById(id : string) : Promise <User>{
 
         const isValidId = mongoose.Types.ObjectId.isValid(id)
         
@@ -67,7 +67,7 @@ export class UsersService {
 
 
 
-    async updateUser(updateUserDto : UpdateUserDto , id : string){
+    async updateUser(updateUserDto : UpdateUserDto , id : string) : Promise <User>{
 
         const isValidId = mongoose.Types.ObjectId.isValid(id)
         

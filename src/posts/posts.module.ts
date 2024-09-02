@@ -13,6 +13,10 @@ import { PostsService } from './services/posts.service';
             {
                 name : Post.name ,
                 schema : postSchema
+            },
+            {
+                name : User.name ,
+                schema : userSchema
             }
         ])
     ],

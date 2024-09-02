@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { UserSettings } from "./UserSettings.schema";
 import { Post } from "./Post.schema";
 
@@ -20,7 +20,7 @@ export class User{
     settings : UserSettings
     
     @Prop({type : [{type : mongoose.Schema.Types.ObjectId , ref : "Post"}]}) // this will be a ref id key to other schema
-    posts : Post[]
+    posts : Types.ObjectId[]
 
 }
 

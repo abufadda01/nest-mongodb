@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Patc
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { UpdateUserDto } from 'src/users/dtos/UpdateUser.dto';
 import { UsersService } from '../services/users.service';
+import { User } from 'src/schemas/User.Schema';
 
 
 
@@ -14,20 +15,19 @@ export class UsersController {
 
     @Post()
     @UsePipes(new ValidationPipe()) // will check the validation from the dto class first then the schema validation will be checked since the createUser function from the service use the users model inside it
-    createUser(@Body() createUserDto : CreateUserDto){  
-        console.log(createUserDto)
+    createUser(@Body() createUserDto : CreateUserDto) : Promise <User>{  
         return this.usersService.createUser(createUserDto)
     }
 
 
     @Get()
-    getUsers(@Query("page") page : number | 1){
+    getUsers(@Query("page") page : number | 1) : Promise <User[]>{
         return this.usersService.getUsers(page)
     }
 
 
     @Get("/:id")
-    async getUserById(@Param("id") id : string){    
+    async getUserById(@Param("id") id : string) : Promise <User>{    
         return this.usersService.getUserById(id)
     }
 
